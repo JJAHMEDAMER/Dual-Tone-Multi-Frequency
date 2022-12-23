@@ -28,4 +28,13 @@ function main()
     plot(phone_num_tone)
     audiowrite('phone_num_tone.wav',phone_num_tone,fs);
 
+    
+    % Noise
+    noise = wgn(length(phone_num_tone),1,1);
+    noise = transpose(noise);
+    phone_num_tone_noise = phone_num_tone + noise;
+
+    figure()
+    plot(phone_num_tone_noise)
+    audiowrite('phone_num_tone_noise.wav', phone_num_tone_noise, fs);
 end
