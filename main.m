@@ -6,6 +6,7 @@ function main()
     [frq_low, frq_high] = sym2frq('0');
 
     tone_test = tone(frq_low, frq_high, time_sample);
+    disp(tone_test)
 
     figure()
     plot(tone_test)
@@ -77,24 +78,44 @@ nff = 2^14;
 %     saveas(gcf,strcat(base_name, num, ext))
 % end
 
-fontSize = 12;
-figure()
-for i = 1:length(window)
-    rectangle_phone_num_tone = rectwin(window(i));
-    subplot(2,3,i)
-    spectrogram(phone_num_tone, rectangle_phone_num_tone, width(i), nff, fs);
-    title(strcat('Window: ', int2str(window(i))), 'FontSize', fontSize) 
-end
-saveas(gcf,'rect.png')
+% fontSize = 12;
+% figure(1)
+% for i = 1:length(window)
+%     rectangle_phone_num_tone = rectwin(window(i));
+%     subplot(2,3,i)
+%     spectrogram(phone_num_tone, rectangle_phone_num_tone, width(i), nff, fs);
+%     title(strcat('Window: ', int2str(window(i))), 'FontSize', fontSize) 
+% end
+% saveas(gcf,'rect.png')
+% 
+% 
+% figure(2)
+% for i = 1:length(window)
+%     blackman_phone_num_tone = blackman(window(i));
+%     subplot(2,3,i)
+%     spectrogram(phone_num_tone, blackman_phone_num_tone, width(i), nff, fs);
+%     title(strcat('Window: ', int2str(window(i))), 'FontSize', fontSize) 
+% end
+% saveas(gcf,'blackman.png')
 
 
+%%%%%%%%%% GET PHONE NUMBER %%%%%%%%%%%%
+number_of_samples = (length(time_sample)+length(time_sample_guard));
+
+start = 1;
+ended = number_of_samples;
+
+f = [697 770 852 941 1209 1336 1477 1633];
+freq_indices = round(f/fs*number_of_samples) + 1; 
+
 figure()
-for i = 1:length(window)
-    blackman_phone_num_tone = blackman(window(i));
-    subplot(2,3,i)
-    spectrogram(phone_num_tone, blackman_phone_num_tone, width(i), nff, fs);
-    title(strcat('Window: ', int2str(window(i))), 'FontSize', fontSize) 
+for i = 1:length(phone_num)
+    dft_data = goertzel(phone_num_tone(start:ended), freq_indices);
+    subplot(3,4,i)
+    stem(f, abs(dft_data))
+    
+    start = start + 962;
+    ended = ended + 962;
 end
-saveas(gcf,'blackman.png')
 
 end
