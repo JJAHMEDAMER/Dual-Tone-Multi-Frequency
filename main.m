@@ -57,7 +57,16 @@ window = [16 64 256 1024 4096];
 width = window/2; % 50%
 nff = 2^14;
 
-figure()
+for i = 1:length(window)
+    rectangle_phone_num_tone = rectwin(window(i));
+    figure()
+    base_name = 'project/rect';
+    num = int2str(i);
+    ext = '.png';
+    spectrogram(phone_num_tone, rectangle_phone_num_tone, width(i), nff, fs);
+    saveas(gcf,strcat(base_name, num, ext))
+end
+
 for i = 1:length(window)
     blackman_phone_num_tone = blackman(window(i));
     figure()
