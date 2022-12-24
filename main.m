@@ -53,11 +53,20 @@ function main()
     
 %%%%%%%%%% Sliding Window %%%%%%%%%%
 
-window = 1024;
-width = floor(window/2); % 50%
+window = [16 64 256 1024 4096];
+width = window/2; % 50%
 nff = 2^14;
-blackman_phone_num_tone = blackman(window);
+
 figure()
-spectrogram(phone_num_tone, blackman_phone_num_tone, width, nff, fs);
+for i = 1:length(window)
+    blackman_phone_num_tone = blackman(window(i));
+    figure()
+    base_name = 'project/blackman';
+    num = int2str(i);
+    ext = '.png';
+    spectrogram(phone_num_tone, blackman_phone_num_tone, width(i), nff, fs);
+    saveas(gcf,strcat(base_name, num, ext))
+end
+
 
 end
