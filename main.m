@@ -1,13 +1,18 @@
 function main()
+    close all;
     fs = 8000;
     time_sample = 0:(1/fs):0.1;
-
+    
     [frq_low, frq_high] = sym2frq('0');
 
     tone_test = tone(frq_low, frq_high, time_sample);
 
     figure()
     plot(tone_test)
+%     title('Tone Test')
+%     xlabel('Time Sample')
+%     ylabel('Frequency')
+%     grid on;
     audiowrite('tone.wav',tone_test,fs);
 
     phone_num = '01548754792';
@@ -28,13 +33,25 @@ function main()
     plot(phone_num_tone)
     audiowrite('phone_num_tone.wav',phone_num_tone,fs);
 
+%%%%%%%%%% Noise %%%%%%%%%%
     
-    % Noise
-    noise = wgn(length(phone_num_tone),1,1);
-    noise = transpose(noise);
+    % noise = wgn(length(phone_num_tone),1,1);
+    % noise = transpose(noise);
+    
+    noise = sqrt(0.1)*randn(1,length(phone_num_tone));
     phone_num_tone_noise = phone_num_tone + noise;
 
     figure()
     plot(phone_num_tone_noise)
     audiowrite('phone_num_tone_noise.wav', phone_num_tone_noise, fs);
+    
+%%%%%%%%%% FTT %%%%%%%%%%
+    
+    phone_num_tone_noise_FFT = abs(fft(phone_num_tone_noise));
+    figure()
+    plot( phone_num_tone_noise_FFT)
+    
+%%%%%%%%%% FTT %%%%%%%%%%
+
+    
 end
