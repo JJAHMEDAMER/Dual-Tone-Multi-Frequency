@@ -51,7 +51,13 @@ function main()
     figure()
     plot( phone_num_tone_noise_FFT)
     
-%%%%%%%%%% FTT %%%%%%%%%%
+%%%%%%%%%% Sliding Window %%%%%%%%%%
 
-    
+window = 1024;
+width = floor(window/2); % 50%
+nff = 2^14;
+blackman_phone_num_tone = blackman(window);
+figure()
+spectrogram(phone_num_tone, blackman_phone_num_tone, width, nff, fs);
+
 end
